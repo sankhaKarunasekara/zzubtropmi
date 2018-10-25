@@ -10,6 +10,11 @@ function csvMappingController($scope, dragulaService) {
 		//copy: true
 	});
 
+	$scope.activitiesFiltered = [];
+	$scope.dealsFilterd = [];
+	$scope.peopleFiltered = [];
+	$scope.companiesFiltered = [];
+
 	// $scope.dealFields;
 	// $scope.peopleFields;
 	// $scope.companyFields;
