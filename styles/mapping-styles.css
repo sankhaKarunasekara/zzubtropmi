@@ -1,0 +1,108 @@
+#ui-container {
+	background-color: #4e92e0;
+	height: 100vh;
+	overflow: auto;
+	padding: 1em 0 2em 0;
+}
+#ui-container h3,
+#ui-container h5 {
+	text-align: center;
+}
+.source-item {
+	/* min-width: 8em;
+	max-height: 2.4em;
+	padding: 0.5em;
+	margin: 1em;
+	background-color: white;
+	text-align: center; */
+	border: 1px solid rgba(49, 32, 74, 0.14);
+	margin: 1em 1em;
+
+	cursor: move;
+}
+.source-bag {
+	/* margin-left: 16px;
+	background-color: #4485c1;
+	min-height: 11em;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	padding: 1em;
+	box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5); */
+}
+
+.source-bag .source-item {
+	/* box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.5); */
+}
+
+.map-bag {
+	margin-top: 1em;
+	min-width: 40em;
+	background-color: #fdffff;
+	border: 1px solid #fafafa;
+	display: flex;
+	flex-flow: row wrap;
+	box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.2);
+}
+.map-bag header {
+	position: relative;
+	color: #337ab7;
+	padding: 1em;
+	width: 20em;
+	font-weight: bold;
+}
+.map-bag header.required::after {
+	content: "*";
+	position: absolute;
+	top: 0;
+	left: 0.5em;
+	font-size: 0.9em;
+}
+.map-bag .drop-zone {
+	flex-grow: 1;
+	border: 0.1em dashed rgb(192, 192, 192);
+	background-color: #fafafa;
+}
+.map-bag .drop-zone .source-item {
+	margin: 0 0 0 0;
+	border: 0.1em solid #ffffff;
+}
+.map-list {
+	padding: 10px;
+	height: 80vh;
+	overflow: auto;
+}
+
+.fields-list {
+	height: 80vh;
+	overflow: auto;
+}
+
+#map-submit {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	margin-top: 2em;
+}
+#map-submit button {
+	font-size: 2em;
+	cursor: pointer;
+}
+
+.csv-fieldset fieldset.standard {
+	border-style: solid;
+	border-width: 1px;
+}
+
+.csv-fieldset legend {
+	color: #3f51b5;
+}
+
+.csv-fieldset legend code {
+	color: #3f51b5;
+	font-weight: normal;
+}
+
+.fields-search {
+	margin-bottom: 0px;
+}

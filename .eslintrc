@@ -1,0 +1,25 @@
+{
+	"rules": {
+		"max-line-length": 80,
+		"comma-dangle": [
+			"error",
+			{
+				"objects": "only-multiline",
+				"imports": "always-multiline",
+				"exports": "always-multiline",
+				"functions": "ignore"
+			}
+		],
+		"prefer-destructuring": 0,
+		"settings": {
+			"angular": 1
+		},
+		"max-len": "off",
+		"wrap-iife": ["error", "inside"]
+	},
+	"parserOptions": {
+		"ecmaVersion": 2017
+	},
+	"extends": ["prettier"],
+	"plugins": ["prettier"]
+}

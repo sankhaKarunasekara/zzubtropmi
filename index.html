@@ -1,0 +1,131 @@
+<html ng-app="app">
+
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+  <link rel="stylesheet" href="/styles/import-styles.css">
+  <link rel="stylesheet" href="/styles/mapping-styles.css">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- <script src=" https://cdnjs.cloudflare.com/ajax/libs/dragula/3.1.0/dragula.min.js"></script> -->
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+
+  <!-- TODO: go there to see a preveiwe -->
+  <script src="/node_modules/angular/angular.min.js"></script>
+  <script type="text/javascript" src="/node_modules/angular-material/angular-material.min.js"></script>
+  <script type="text/javascript" src="/node_modules/angular-aria/angular-aria.min.js"></script>
+  <script type="text/javascript" src="/node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+  <script type="text/javascript" src="/node_modules/angular-messages/angular-messages.js"></script>
+  <script type="text/javascript" src="/node_modules/angular-route/angular-route.js"></script>
+  <script type="text/javascript" src="/node_modules/angular-animate/angular-animate.js"></script>
+
+  <script src="/node_modules/angular-material-data-table/dist/md-data-table.js"></script>
+  <script type="text/javascript" src="/node_modules/angular-material-icons/angular-material-icons.js"></script>
+  <link rel='stylesheet' href='/node_modules/angular-loading-bar/build/loading-bar.min.css' type='text/css' media='all' />
+  <script type='text/javascript' src='/node_modules/angular-loading-bar/build/loading-bar.min.js'></script>
+  <!-- 
+  <script type='text/javascript' src='/node_modules/angularjs-dragula/dist/angularjs-dragula.js'></script>
+  <link rel='stylesheet' href='/node_modules/angularjs-dragula/dist/dragula.min.css'> -->
+
+  <link href='/node_modules/dragular/dist/dragular.css' rel='stylesheet' type='text/css' />
+  <script src='/node_modules/dragular/dist/dragular.js'></script>
+
+  <script type='text/javascript' src='/app.constant.js'></script>
+
+  <!--need to add to the buzzflow-->
+  <script type='text/javascript' src='/node_modules/papaparse/papaparse.min.js'></script>
+
+</head>
+<!-- https://codepen.io/mattsince87/pen/yadZXv -->
+
+<body>
+
+  <body layout="column">
+    <md-toolbar class="md-whiteframe-1dp">
+      <div class="md-toolbar-tools">
+        <div class="md-title">Buzzflow Import</div>
+      </div>
+    </md-toolbar>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 md-padding">
+          <div id="import-container" ng-controller="importController as vm">
+
+            <div id="import-step-container">
+              <ul class="nav nav-pills nav-justified">
+                <li ng-repeat="step in vm.steps" ng-class="{'active':step.step == vm.currentStep}" class="convert-progress">
+                  <a ng-click="vm.gotoStep(step.step)" href="">{{step.step}}. {{step.name}}</a>
+                </li>
+              </ul>
+            </div>
+
+            <div layout="row" style="padding-top:16px; padding-bottom:16px;">
+              <div flex="30">
+                <md-input-container style="width:100% !important; margin-top: 8px;">
+                  <label for="importPipeline">Select Pipeline</label>
+                  <md-select id="importPipeline" ng-model="workflowId">
+                    <md-option ng-repeat="flow in workflowData" value="{{flow.workflow.id}}" ng-if="flow.workflow.isAWorkflow">{{flow.workflow.workflowName}}</md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+
+              <div flex="35" flex-offset="30" ng-if="vm.currentStep==2">
+                <md-input-container class="fields-search" style="width:100% !important; margin-top: 8px;">
+                  <md-icon>search</md-icon>
+                  <input placeholder="Filter by keywords" type="text" ng-model="searchText.name" for="importPipeline">
+                </md-input-container>
+              </div>
+            </div>
+
+            <div id="import-content-container">
+              <div ng-switch="vm.currentStep">
+                <div ng-switch-when="1" import-upload></div>
+                <div ng-switch-when="2">
+                  <csv-mapper source="fieldsList" companyfields="companyFields" peoplefields="peopleFields" dealfields="dealFields"
+                    activityfields="activityFields" searchtext="searchText" map="csvHeaderList"></csv-mapper>
+                </div>
+                <div class="buzz-import-mapping" ng-switch-when="3" import-finishing></div>
+                <div ng-switch-when="4" import-complete></div>
+              </div>
+            </div>
+
+            <div id="import-navigation-container">
+              <div class="pull-right">
+                <span class="btn-group">
+                  <!-- <md-button ng-disabled="vm.currentStep <= 1" class="md-primary" name="previous" type="button"
+                    ng-click="vm.gotoStep(vm.currentStep - 1)"><i class="fa fa-arrow-left"></i> Previous step</md-button> -->
+                  <button ng-disabled="vm.currentStep <= 1" class="btn btn-default" name="previous" type="button"
+                    ng-click="vm.gotoStep(vm.currentStep - 1)"><i class="fa fa-arrow-left"></i> Previous step</button>
+                  <button ng-disabled="vm.currentStep >= vm.steps.length" class="btn btn-primary" name="next" type="button"
+                    ng-click="vm.gotoStep(vm.currentStep + 1)">Next step <i class="fa fa-arrow-right"></i></button>
+                </span>
+                <button ng-disabled="vm.currentStep != vm.steps.length" class="btn btn-success" name="next" type="button"
+                  ng-click="vm.save()"> <i class="fa fa-floppy-o"></i> Save</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </body>
+
+  <script src="app.js"></script>
+  <script src="/buzzflow.import/import.module.js"></script>
+  <script src="/buzzflow.import/import.service.js"></script>
+  <script src="/buzzflow.import/import.controller.js"></script>
+  <script src="/buzzflow.import/import.directive.js"></script>
+  <script src="/buzzflow.import/csv.mapping.controller.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+{
+	"name": "uniserve.admin.urldata",
+	"version": "1.0.0",
+	"description": "URL Data component of uniserse application",
+	"main": "index.js",
+	"scripts": {
+		"start": "run-script-os",
+		"start:win32": "browser-sync start --server --files '**/*.css, **/*.html, **/*.js, !node_modules/**/*' --directory --port 7777 --browser \"C:\\Program Files\\Mozilla Firefox\\firefox.exe\"",
+		"//": "Hello! If you are having trouble running this command. Try changing Firefox Developer Edition to FirefoxDeveloperEdition",
+		"start:darwin:linux": "browser-sync start --server --files '**/*.css, **/*.html, **/*.js, !node_modules/**/*' --directory --port 7777 --browser 'Firefox Developer Edition'"
+	},
+	"author": "Sankha Lakshan Karunasekara",
+	"license": "ISC",
+	"devDependencies": {
+		"browser-sync": "^2.24.5",
+		"run-script-os": "^1.0.3"
+	},
+	"dependencies": {
+		"angular": "^1.7.5",
+		"angular-animate": "^1.7.5",
+		"angular-aria": "^1.7.5",
+		"angular-loading-bar": "^0.9.0",
+		"angular-material": "^1.1.10",
+		"angular-material-data-table": "^0.10.10",
+		"angular-material-icons": "^0.7.1",
+		"angular-messages": "^1.7.5",
+		"angular-route": "^1.7.5",
+		"angular-sanitize": "^1.7.5",
+		"angularjs": "0.0.1",
+		"angularjs-dragula": "^2.0.0",
+		"dragular": "^4.5.0",
+		"eslint": "^5.7.0",
+		"eslint-config-airbnb": "^17.1.0",
+		"eslint-config-prettier": "^3.1.0",
+		"eslint-plugin-prettier": "^3.0.0",
+		"express": "^4.16.4",
+		"morgan": "^1.9.1",
+		"ng-table": "^3.0.1",
+		"papaparse": "^4.6.1"
+	}
+}
