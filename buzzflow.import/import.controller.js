@@ -2,9 +2,9 @@ angular
 	.module("buzzflow.import")
 	.controller("importController", importController);
 
-importController.$inject = ["$scope", "importService", "dragularService"];
+importController.$inject = ["$scope", "importService", "dragulaService"];
 
-function importController($scope, importService, dragularService) {
+function importController($scope, importService, dragulaService) {
 	// dragulaService.options($scope, "dragbag", {
 	// 	copy: true,
 	// 	revertOnSpill: true,

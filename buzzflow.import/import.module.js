@@ -1,3 +1,3 @@
 angular
-	.module("buzzflow.import", ["dragularModule"])
+	.module("buzzflow.import", [angularDragula(angular)])
 	.constant("workflowData", workflowDataConst);
