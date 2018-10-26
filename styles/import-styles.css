@@ -23,7 +23,9 @@ h2 {
 p {
 	font-family: "Roboto", sans-serif;
 }
-
+.container {
+	margin: 10px;
+}
 .uploader {
 	display: block;
 	clear: both;
@@ -99,4 +101,100 @@ p {
 	background: #454cad;
 	border-color: #454cad;
 	cursor: pointer;
+}
+
+.pull-left {
+	float: left;
+}
+
+.import-wizard-steps li {
+	display: block;
+	background: rgba(4, 4, 4, 0.1);
+	position: relative;
+	float: left;
+	--box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+	border-radius: 0.2rem;
+	--border-top: 0.01rem solid rgba(230, 230, 230, 0.2);
+	--border-left: 0rem solid rgba(0, 0, 0, 0.02);
+	--border-right: 0rem solid rgba(0, 0, 0, 0.02);
+}
+
+.import-wizard-steps li a {
+	color: rgb(90, 77, 77);
+	padding-left: 2.4rem;
+	padding-left: 1.6rem;
+}
+
+.import-wizard-steps li:first-of-type a {
+	padding-left: 1.6rem;
+}
+
+.import-wizard-steps li:last-of-type a {
+	padding-right: 1.6rem;
+}
+
+.import-wizard-steps li:last-of-type a:before,
+.import-wizard-steps li:last-of-type a:after {
+	visibility: hidden;
+}
+
+.import-wizard-steps a:before,
+.import-wizard-steps a:after {
+	z-index: 1;
+	height: 50%;
+	width: 1rem;
+	right: 0%;
+	margin-right: -0.5rem;
+	padding: 0;
+	display: block;
+	content: "";
+	background: inherit;
+	position: absolute;
+	transform: skewX(20deg);
+	box-shadow: 0.2rem 0 0 0 rgba(0, 0, 0, 0.2);
+	/*
+	 box-shadow: inset 2px 0px 5px 2px rgba(50, 50, 50, 0.75); 
+	 */
+	border-radius: 80% 0.1rem 0 0;
+	border: solid rgba(255, 255, 255, 0.9);
+	border-width: 0 0.3rem 0 0;
+}
+
+.import-wizard-steps a:before {
+	top: 0%;
+}
+
+.import-wizard-steps a:after {
+	transform: skewX(-20deg);
+	border-radius: 0 0 0.1rem 80%;
+	border-width: 0 0.3rem 0 0;
+	bottom: 0%;
+	box-shadow: 0.2rem 0 0 0 rgba(0, 0, 0, 0.3);
+}
+
+.import-wizard-steps a > * {
+	cursor: pointer;
+}
+
+.import-wizard-steps a {
+	cursor: pointer;
+	display: block;
+	position: relative;
+	padding: 1rem 1.2rem 1rem 1.6rem;
+	border-radius: 0.15rem 0.15rem 0.15rem 0.15rem;
+	background: #eee;
+	/*
+	border: solid .0rem rgba(255,255,255,.2);
+	border: solid .1rem rgba(0,0,0,.05);
+	*/
+	border-left: solid 0.1rem rgba(100, 100, 100, 0.1);
+	border-right: solid 0.1rem rgba(100, 100, 100, 0.1);
+	border-top: solid 0.1rem rgba(0, 0, 0, 0.1);
+	border-bottom: solid 0.1rem rgba(0, 0, 0, 0.12);
+	box-shadow: 0px 1px 0.2rem 1px rgba(0, 0, 0, 0.1),
+		inset 0px 0px 0px 1px rgba(250, 250, 250, 0.1);
+}
+
+.import-wizard-steps a {
+	transition: background-color 0.1s ease, color 0.3s ease;
 }

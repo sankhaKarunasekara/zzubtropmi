@@ -5,10 +5,10 @@ importService.$inject = ["$q", "$http", "workflowData"];
 function importService($q, $http, workflowData) {
 	var importService = {
 		getWorkflowData: getWorkflowData,
-		get: get,
-		add: add,
-		update: update,
-		remove: remove
+		get: get
+		// add: add,
+		// update: update,
+		// remove: remove
 	};
 
 	return importService;
@@ -49,29 +49,47 @@ function importService($q, $http, workflowData) {
 		return response;
 	}
 
-	async function update(url_data_Obj) {
-		// Simple GET request example:
-		// url_data_id
-		const response = await $http({
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			url: "https://1-dot-aryaz-1.appspot.com/urldata/update",
-			data: url_data_Obj
-		});
-		return response;
+	function genearteRequest(instanceId, fileName, fileId, email, csvHeaderList) {
+		csvHeaderList;
 	}
 
-	async function remove(url_data_id) {
-		// Simple GET request example:
-		const response = await $http({
-			method: "DELETE",
-			url: "https://1-dot-aryaz-1.appspot.com/urldata/delete",
-			params: {
-				url_data_id: url_data_id
-			}
-		});
-		return response;
-	}
+	// {
+	// 	"instanceId":"instanceId",
+	// 	"fileName":"fileName",
+	// 	"fileId":"fileId",
+	// 	"email":"email",
+	// 	"workflowMapping":{
+	// 	   "Activity":"<activity_workflowId>",
+	// 	   "People":"<people_workflowId>",
+	// 	   "Companies":"<companies_workflowId>",
+	// 	   "Opportunity":"<opportunities_workflowId>"
+	// 	},
+	// 	"mapping":{
+	// 	   "csv_column_index(0)":{
+	// 		 "fieldId":"field_id",
+	// 		 "fieldType":"fieldType",
+	// 		 "workflow":"<opportunity_workflowId>"
+	// 	   },
+	// 	   "csv_column_index(2)":{
+	// 		 "fieldId":"field_id",
+	// 		 "fieldType":"fieldType",
+	// 		 "workflow":"<opportunity_workflowId>"
+	// 	   },
+	// 	   "csv_column_index(3)":{
+	// 		 "fieldId":"field_id",
+	// 		 "fieldType":"fieldType",
+	// 		 "workflow":"<contact_workflowId>"
+	// 	   },
+	// 	   "csv_column_index(6)":{
+	// 		 "fieldId":"field_id",
+	// 		 "fieldType":"fieldType",
+	// 		 "workflow":"<contact_workflowId>"
+	// 	   },
+	// 	   "csv_column_index(7)":{
+	// 		 "fieldId":"field_id",
+	// 		 "fieldType":"fieldType",
+	// 		 "workflow":"<activity_workflowId>"
+	// 	   }
+	// 	}
+	//   }
 }

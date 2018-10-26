@@ -10,7 +10,16 @@ function importController($scope, importService, dragulaService) {
 	$scope.mapComplete = false;
 	$scope.headerList = [];
 	$scope.csvHeaderList = [];
+	$scope.workflowId = "";
 
+	dragulaService.options($scope, "dragbag", {
+		revertOnSpill: true,
+		accepts: function(el, target, source, sibling) {
+			return true;
+		}
+	});
+
+	$scope.searchText = {};
 	$scope.$on("drag-drop-mapping-update", function(eventName, args) {
 		$scope.$apply();
 
@@ -65,63 +74,84 @@ function importController($scope, importService, dragulaService) {
 
 	$scope.uploadState = "before";
 	$scope.dataFile = null;
-	var workflowData = importService.getWorkflowData();
-	$scope.workflowData = workflowData;
 
-	var workflowId = "14";
+	$scope.workflowData = importService.getWorkflowData();
+
 	$scope.csvHeaderFields = [];
 	$scope.csvInitialMapping = [];
 
-	var notWorkflows = Object.values(workflowData).filter(
-		workflow => workflow.workflow.isAWorkflow == false
-	);
+	$scope.loadWorkflowFieldItems = function() {
+		var notWorkflows = Object.values($scope.workflowData).filter(
+			workflow => workflow.workflow.isAWorkflow == false
+		);
 
-	$scope.dealFields = workflowData[workflowId].fields.map(field => ({
-		id: field.id,
-		name: field.name,
-		type: field.type,
-		module: "Deal",
-		isVisible: field.isVisible
-	}));
+		$scope.dealFields = $scope.workflowData[$scope.workflowId].fields.map(
+			field => ({
+				id: field.id,
+				name: field.name,
+				type: field.type,
+				module: "Deal",
+				isVisible: field.isVisible
+			})
+		);
 
-	$scope.activityFields = notWorkflows
-		.filter(item => item.workflow.workflowName == "Activity")[0]
-		.fields.map(field => ({
-			id: field.id,
-			name: field.name,
-			type: field.type,
-			module: "Activity",
-			isVisible: field.isVisible
-		}));
+		$scope.activityFields = notWorkflows
+			.filter(item => item.workflow.workflowName == "Activity")[0]
+			.fields.map(field => ({
+				id: field.id,
+				name: field.name,
+				type: field.type,
+				module: "Activity",
+				isVisible: field.isVisible
+			}));
 
-	$scope.peopleFields = notWorkflows
-		.filter(item => item.workflow.workflowName == "People")[0]
-		.fields.map(field => ({
-			id: field.id,
-			name: field.name,
-			type: field.type,
-			module: "People",
-			isVisible: field.isVisible
-		}));
+		$scope.peopleFields = notWorkflows
+			.filter(item => item.workflow.workflowName == "People")[0]
+			.fields.map(field => ({
+				id: field.id,
+				name: field.name,
+				type: field.type,
+				module: "People",
+				isVisible: field.isVisible
+			}));
 
-	$scope.companyFields = notWorkflows
-		.filter(item => item.workflow.workflowName == "Companies")[0]
-		.fields.map(field => ({
-			id: field.id,
-			name: field.name,
-			type: field.type,
-			module: "Company",
-			isVisible: field.isVisible
-		}));
+		$scope.companyFields = notWorkflows
+			.filter(item => item.workflow.workflowName == "Companies")[0]
+			.fields.map(field => ({
+				id: field.id,
+				name: field.name,
+				type: field.type,
+				module: "Company",
+				isVisible: field.isVisible
+			}));
 
-	$scope.fieldsList = [
-		...$scope.dealFields,
-		...$scope.peopleFields,
-		...$scope.companyFields,
-		...$scope.activityFields
-	];
+		$scope.fieldsList = [
+			...$scope.dealFields,
+			...$scope.peopleFields,
+			...$scope.companyFields,
+			...$scope.activityFields
+		];
 
-	console.table($scope.fieldsList);
+		var activityWorkflow = notWorkflows.filter(
+			item => item.workflow.workflowName == "Activity"
+		)[0];
+
+		//var workflowIds = Object.keys($scope.workflowData);
+
+		// for (let i = 0; i < workflowIds.length; i++) {
+		// 	let worflowId = workflowIds[i];
+		// 	$scope.workflowData[worflowId].filter(function(item) {});
+		// }
+
+		// var peopleWorkflow = notWorkflows.filter(
+		// 	item => item.workflow.workflowName == "People"
+		// )[0];
+
+		// var companyWorkflow = notWorkflows.filter(
+		// 	item => item.workflow.workflowName == "Company"
+		// )[0];
+	};
+
 	$scope.startMapping = async function(files) {
 		//TODO: manoj ayya's sending file to backend
 		$scope.fileName = files[0].name;
@@ -281,15 +311,6 @@ function importController($scope, importService, dragulaService) {
 			return null;
 		}
 	}
-
-	dragulaService.options($scope, "dragbag", {
-		revertOnSpill: true,
-		accepts: function(el, target, source, sibling) {
-			return true;
-		}
-	});
-
-	$scope.searchText = {};
 
 	$scope.addMapping = function($dropSource, $target, $source) {
 		if ($dropSource.hasClass("drop-zone")) {
