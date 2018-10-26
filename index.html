@@ -78,22 +78,19 @@
                   </md-select>
                 </md-input-container>
               </div>
-
-              <div flex="35" flex-offset="30" ng-if="vm.currentStep==2">
-                <md-input-container class="fields-search" style="width:100% !important; margin-top: 8px;">
-                  <md-icon>search</md-icon>
-                  <input placeholder="Filter by keywords" type="text" ng-model="searchText.name" for="importPipeline">
-                </md-input-container>
-              </div>
             </div>
 
             <div id="import-content-container">
               <div ng-switch="vm.currentStep">
                 <div ng-switch-when="1" import-upload></div>
-                <div ng-switch-when="2">
+                <!--  <div ng-switch-when="2">
                   <csv-mapper source="fieldsList" companyfields="companyFields" peoplefields="peopleFields" dealfields="dealFields"
-                    activityfields="activityFields" searchtext="searchText" map="csvHeaderList"></csv-mapper>
+                    activityfields="activityFields" map="csvHeaderList"></csv-mapper>
+                </div> -->
+                <div ng-switch-when="2">
+                  <import-mapping></import-mapping>
                 </div>
+
                 <div class="buzz-import-mapping" ng-switch-when="3" import-finishing></div>
                 <div ng-switch-when="4" import-complete></div>
               </div>
@@ -124,7 +121,6 @@
   <script src="/buzzflow.import/import.service.js"></script>
   <script src="/buzzflow.import/import.controller.js"></script>
   <script src="/buzzflow.import/import.directive.js"></script>
-  <script src="/buzzflow.import/csv.mapping.controller.js"></script>
 </body>
 
 </html>

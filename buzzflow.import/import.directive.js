@@ -30,25 +30,6 @@ angular
 			};
 		}
 	])
-	.directive("csvMapper", function() {
-		return {
-			restrict: "E",
-			replace: true,
-			//transclude: true,
-			scope: {
-				source: "=",
-				map: "=",
-				companyfields: "=",
-				peoplefields: "=",
-				dealfields: "=",
-				activityfields: "=",
-				searchtext: "="
-			},
-			controller: "csvMappingCtrl",
-			templateUrl: "/buzzflow.import/templates/csv.mapping.html",
-			link: function(scope, element, attrs) {}
-		};
-	})
 	.directive("fileOnChange", function() {
 		return {
 			restrict: "A",

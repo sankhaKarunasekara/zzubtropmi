@@ -1,36 +1,116 @@
-<!-- <md-content class="buzz-import" layout="row" layout-xs="column">
-
-	<div style="display:inline;" flex="30">
-		<md-list>
-			<md-list-item style="border-bottom:solid 1px #bebebe;" class="md-2-line" ng-repeat="field in csvHeaderFields">
-				<div class="md-list-item-text">
-					<h3>{{field}}</h3>
-					<p>Mandatary Field</p>
-				</div>
-			</md-list-item>
-		</md-list>
+<div class="drag-drop-mapper" layout="row">
+	<div flex="55">
+		<md-tabs md-dynamic-height md-border-bottom>
+			<md-tab label="CSV Fields">
+				<md-content style="padding-top:0px">
+					<div class="map-list">
+						<div class="map-bag" ng-repeat="item in csvHeaderList track by $index">
+							<header ng-class="{required: item.required === true}">{{item.text}}</header>
+							<div class="drop-zone" dragula='"dragbag"' data-index="{{$index}}">
+								<!-- <p style="margin:1em"><i>Drag and drop a filed here</i></p> -->
+								<md-list-item ng-if="item.mapValue!=null" class="source-item" data-index="{{item.id}}">
+									<p>{{item.mapValue.name}}</p>
+									<md-icon ng-if="item.mapValue.module=='Deal'" class="md-secondary">attach_money
+									</md-icon>
+									<md-icon ng-if="item.mapValue.module=='People'" class=" md-secondary">perm_identity
+									</md-icon>
+									<md-icon ng-if="item.mapValue.module=='Company'" class="md-secondary">business
+									</md-icon>
+									<md-icon ng-if="item.mapValue.module=='Activity'" class="md-secondary">event
+									</md-icon>
+								</md-list-item>
+							</div>
+						</div>
+					</div>
+				</md-content>
+			</md-tab>
+		</md-tabs>
 	</div>
 
-	<div style="display:inline;" flex="30">
-		<md-list dragula='"first-bag"' dragula-model='csvInitialMapping'>
-			<md-list-item style="border-bottom:solid 1px #bebebe;" class="md-2-line" title="{{item.name}}" ng-repeat="item in csvInitialMapping">
-				<div class="md-list-item-text">
-					<h3>{{item.name}}</h3>
-				</div>
-				<md-icon class="md-secondary material-icons">warning</md-icon>
-			</md-list-item>
-		</md-list>
+	<div flex="40" flex-offset="5">
+		<div flex="90">
+			<md-input-container class="fields-search" style="width:100% !important; margin-top: 8px;">
+				<md-icon>search</md-icon>
+				<input placeholder="Filter by keywords" type="text" ng-model="searchText.name" for="importPipeline">
+			</md-input-container>
+		</div>
+		<md-tabs md-dynamic-height md-border-bottom>
+			<md-tab>
+				<md-tab-label>
+					<md-tooltip>People</md-tooltip>
+					<i class="material-icons">person</i>
+					<span class="badge badge-pill">{{peopleFiltered.length}}</span>
+					<!-- <div style="font-size: 9px;top: -6px; position:relative;">People</div> -->
+				</md-tab-label>
+				<md-tab-body>
+					<div class="fields-list">
+						<md-list dragula='"dragbag"' class="source-bag">
+							<md-list-item class="source-item" ng-repeat="item in peopleFields | filter:searchText as peopleFiltered"
+							 data-index="{{item.id}}" data-module="People">
+								<p>{{item.name}}</p>
+								<md-icon class="md-secondary">perm_identity</md-icon>
+							</md-list-item>
+						</md-list>
+					</div>
+				</md-tab-body>
+			</md-tab>
+			<md-tab>
+				<md-tab-label>
+					<md-tooltip>Deals</md-tooltip>
+					<i class="material-icons">attach_money</i>
+					<span class="badge badge-pill">{{dealsFiltered.length}}</span>
+					<!-- <div style="font-size: 9px;top: 0px;">Deals</div> -->
+				</md-tab-label>
+				<md-tab-body>
+					<div class="fields-list">
+						<md-list dragula='"dragbag"' class="source-bag">
+							<md-list-item class="source-item" ng-repeat="item in dealFields | filter:searchText as dealsFiltered"
+							 data-module="Deal" data-index="{{item.id}}">
+								<p>{{item.name}}</p>
+								<md-icon class="md-secondary">attach_money</md-icon>
+							</md-list-item>
+						</md-list>
+					</div>
+				</md-tab-body>
+			</md-tab>
+			<md-tab>
+				<md-tab-label>
+					<md-tooltip>Companies</md-tooltip>
+					<i class="material-icons">business</i>
+					<span class="badge badge-pill">{{companiesFiltered.length}}</span>
+					<!-- <div style="font-size: 9px; top: -6px; position: relative;">Companies</div> -->
+				</md-tab-label>
+				<md-tab-body>
+					<div class="fields-list">
+						<md-list dragula='"dragbag"' class="source-bag">
+							<md-list-item class="source-item" ng-repeat="item in companyFields | filter:searchText as companiesFiltered"
+							 data-index="{{item.id}}" data-module="Company">
+								<p>{{item.name}}</p>
+								<md-icon class="md-secondary">business</md-icon>
+							</md-list-item>
+						</md-list>
+					</div>
+				</md-tab-body>
+			</md-tab>
+			<md-tab>
+				<md-tab-label>
+					<md-tooltip>Activities</md-tooltip>
+					<i class="material-icons">event</i>
+					<span class="badge badge-pill">{{activitiesFiltered.length}}</span>
+					<!-- <div style="font-size: 9px;top: -8px;position: relative;">Activities</div> -->
+				</md-tab-label>
+				<md-tab-body>
+					<div class="fields-list">
+						<md-list dragula='"dragbag"' class="source-bag">
+							<md-list-item class="source-item" ng-repeat="item in activityFields | filter:searchText as activitiesFiltered"
+							 data-index="{{item.id}}" data-module="Activity">
+								<p>{{item.name}}</p>
+								<md-icon class="md-secondary">event</md-icon>
+							</md-list-item>
+						</md-list>
+					</div>
+				</md-tab-body>
+			</md-tab>
+		</md-tabs>
 	</div>
-
-	<div style="display:inline; min-height:100px" flex="40">
-		<md-list dragula='"first-bag"' dragula-model='workflowFields'>
-			<md-list-item style="border-bottom:solid 1px #bebebe;" title="{{field}}" class="md-2-line" ng-repeat="field in workflowFields">
-				<div class="md-list-item-text">
-					<h3>{{field.name}}</h3>
-					<p>Mandatary Field</p>
-				</div>
-				<md-icon class="md-secondary material-icons">warning</md-icon>
-			</md-list-item>
-		</md-list>
-	</div>
-</md-content> -->
+</div>
