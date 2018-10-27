@@ -79,21 +79,27 @@ function importController($scope, importService, dragulaService) {
 
 	$scope.csvHeaderFields = [];
 	$scope.csvInitialMapping = [];
+	$scope.notWorkflows = [];
+	$scope.workflowMapping = [];
 
 	$scope.loadWorkflowFieldItems = function() {
-		var notWorkflows = Object.values($scope.workflowData).filter(
+		const workflowId = $scope.workflowId;
+
+		const notWorkflows = Object.values($scope.workflowData).filter(
 			workflow => workflow.workflow.isAWorkflow == false
 		);
 
-		$scope.dealFields = $scope.workflowData[$scope.workflowId].fields.map(
-			field => ({
-				id: field.id,
-				name: field.name,
-				type: field.type,
-				module: "Deal",
-				isVisible: field.isVisible
-			})
-		);
+		let workflowMapping = getWorkflowMapping(notWorkflows, workflowId);
+		$scope.workflowMapping = workflowMapping;
+
+		$scope.dealFields = $scope.workflowData[workflowId].fields.map(field => ({
+			id: field.id,
+			name: field.name,
+			type: field.type,
+			module: "Deal",
+			workflow: workflowMapping["Opportunity"],
+			isVisible: field.isVisible
+		}));
 
 		$scope.activityFields = notWorkflows
 			.filter(item => item.workflow.workflowName == "Activity")[0]
@@ -102,6 +108,7 @@ function importController($scope, importService, dragulaService) {
 				name: field.name,
 				type: field.type,
 				module: "Activity",
+				workflow: workflowMapping["Activity"],
 				isVisible: field.isVisible
 			}));
 
@@ -112,6 +119,7 @@ function importController($scope, importService, dragulaService) {
 				name: field.name,
 				type: field.type,
 				module: "People",
+				workflow: workflowMapping["People"],
 				isVisible: field.isVisible
 			}));
 
@@ -122,34 +130,9 @@ function importController($scope, importService, dragulaService) {
 				name: field.name,
 				type: field.type,
 				module: "Company",
+				workflow: workflowMapping["Company"],
 				isVisible: field.isVisible
 			}));
-
-		$scope.fieldsList = [
-			...$scope.dealFields,
-			...$scope.peopleFields,
-			...$scope.companyFields,
-			...$scope.activityFields
-		];
-
-		var activityWorkflow = notWorkflows.filter(
-			item => item.workflow.workflowName == "Activity"
-		)[0];
-
-		//var workflowIds = Object.keys($scope.workflowData);
-
-		// for (let i = 0; i < workflowIds.length; i++) {
-		// 	let worflowId = workflowIds[i];
-		// 	$scope.workflowData[worflowId].filter(function(item) {});
-		// }
-
-		// var peopleWorkflow = notWorkflows.filter(
-		// 	item => item.workflow.workflowName == "People"
-		// )[0];
-
-		// var companyWorkflow = notWorkflows.filter(
-		// 	item => item.workflow.workflowName == "Company"
-		// )[0];
 	};
 
 	$scope.startMapping = async function(files) {
@@ -180,7 +163,13 @@ function importController($scope, importService, dragulaService) {
 							(item, index) => ({
 								id: index,
 								text: item,
-								mapValue: autoMapping(item),
+								mapValue: autoMapping(
+									item,
+									$scope.dealFields,
+									$scope.peopleFields,
+									$scope.companyFields,
+									$scope.activityFields
+								),
 								required: false
 							})
 						);
@@ -228,89 +217,12 @@ function importController($scope, importService, dragulaService) {
 						$scope.activityFields = $scope.activityFields.filter(
 							field => !autoMappedActivityFields.includes(field.id)
 						);
-
-						//console.table($scope.csvHeaderList);
 					}
 				});
 			}
 		});
 		//TODO: handle the case when file is excel
 	};
-
-	function validateCSVData(csvRows) {
-		//TODO: Identical header check
-		//whether containing null values in header
-		var header = csvRows[0];
-		var isContainNullValues = header.some(item => item == null);
-
-		if (isContainNullValues) return [];
-
-		//missing header fields
-		var headerLength = header.length;
-		var maxLength = csvRows.reduce((maxLength, row) => {
-			row.length > maxLength ? row.length : maxLength;
-		});
-
-		if (headerLength < maxLength) return [];
-
-		return header;
-	}
-
-	/* this function will automatically map csv fields to 
-	buzzflow fields based on field name*/
-	function autoMapping(csvFieldName) {
-		//TODO: validate only one "-" in the csvFieldName
-		//TODO: identical fields check, weather there will be fields with same name
-		const isCatagoryIncluded = csvFieldName.includes("-");
-		var matchingFields;
-		let fieldCatagory, fieldName;
-
-		if (isCatagoryIncluded) {
-			[fieldCatagory, fieldName] = csvFieldName
-				.split("-")
-				.map(item => item.trim().toLowerCase());
-		} else {
-			fieldCatagory = "deal";
-			fieldName = csvFieldName.trim().toLowerCase();
-		}
-
-		switch (fieldCatagory) {
-			case "deal":
-				matchingFields = $scope.dealFields.filter(
-					field => field.name.trim().toLowerCase() == fieldName
-				);
-				break;
-			case "person":
-			case "people":
-				matchingFields = $scope.peopleFields.filter(
-					field => field.name.toLowerCase() == fieldName
-				);
-
-				break;
-			case "organization":
-			case "company":
-				matchingFields = $scope.companyFields.filter(
-					field => field.name.toLowerCase() == fieldName
-				);
-				break;
-			case "task":
-			case "activity":
-				matchingFields = $scope.activityFields.filter(
-					field => field.name.toLowerCase() == fieldName
-				);
-				break;
-			default:
-				matchingFields = [];
-			//console.log("==", fieldCatagory, fieldName, matchingFields);
-			//console.log(matchingFields);
-		}
-
-		if (matchingFields.length > 0) {
-			return matchingFields[0];
-		} else {
-			return null;
-		}
-	}
 
 	$scope.addMapping = function($dropSource, $target, $source) {
 		if ($dropSource.hasClass("drop-zone")) {
@@ -410,33 +322,24 @@ function importController($scope, importService, dragulaService) {
 				break;
 			default:
 		}
-
-		//$scope.$apply();
 		console.log($scope.csvHeaderList);
 
-		// if ($target.hasClass("source-bag")) {
-		// 	$scope.removeMapping($(source));
-		// } else if ($target.children().length > 1) {
-		// 	$target.children().each(function() {
-		// 		if ($(this).html() !== $(el).html()) {
-		// 			$(source).append($(this));
-		// 		}
-		// 	});
-		// 	$scope.swapMapping(
-		// 		$target,
-		// 		$(source),
-		// 		$(el),
-		// 		$(source).find(".source-item")
-		// 	);
-		// } else {
-		// 	$scope.addMapping($(source), $target, $(el));
-		// }
-		// var mapping = JSON.parse(localStorage.getItem("importMapping"));
-		//$scope.csvHeaderList
 		$scope.$emit("drag-drop-mapping-update", { target: target });
 	});
 
-	function insertToArray(arr, index, newItem) {
-		return [...arr.slice(0, index), newItem, ...arr.slice(index)];
-	}
+	var mappedFields = $scope.csvHeaderList.reduce(function(
+		tempMap,
+		field,
+		index
+	) {
+		if (field.mapValue != null) {
+			tempMap[index] = {
+				fieldId: field.mapValue.id,
+				fieldType: field.mapValue.type,
+				workflow: field.mapValue.workflow
+			};
+		}
+		return tempMap;
+	},
+	{});
 }

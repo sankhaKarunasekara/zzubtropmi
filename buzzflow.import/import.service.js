@@ -49,8 +49,69 @@ function importService($q, $http, workflowData) {
 		return response;
 	}
 
-	function genearteRequest(instanceId, fileName, fileId, email, csvHeaderList) {
-		csvHeaderList;
+	function genearteRequest(
+		instanceId,
+		fileName,
+		fileId,
+		workflowMapping,
+		csvHeaderList
+	) {
+		let requestJson = {
+			instanceId: instanceId,
+			fileName: fileName,
+			fileId: fieldId,
+			email: undefined,
+			workflowMapping: workflowMapping
+		};
+
+		let mapping = csvHeaderList;
+
+		// var mappedFields = $scope.csvHeaderList
+		// 	.map((field, index) => ({
+		// 		fieldId: field.mapValue == null ? null : field.mapValue.id
+		// 	}))
+		// 	.filter(field => field.id != null);
+
+		// let mappedFields = notWorkflows.reduce(
+		// 	(tempMap, field, index) => {
+		// 		if (field.mapValue!=null)
+		// 			tempMap[index] = {
+		// 				fieldId:field.mapValue.id,
+		// 				fieldType:field.mapValue.type,
+		// 				workflow:field.mapValue.workflow
+		// 			}
+		// 		}
+		// 	,tempMap),{});
+
+		var mappedFields = $scope.csvHeaderList.reduce(function(
+			tempMap,
+			field,
+			index
+		) {
+			if (field.mapValue != null) {
+				tempMap[index] = {
+					fieldId: field.mapValue.id,
+					fieldType: field.mapValue.type,
+					workflow: field.mapValue.workflow
+				};
+			}
+			return tempMap;
+		},
+		{});
+
+		// var mappedFields = $scope.csvHeaderList.reduce(
+		// 	(tempMap, field, index) => (
+		// 		field.mapValue != null
+		// 			? (tempMap[index] = {
+		// 					fieldId: field.mapValue.id,
+		// 					fieldType: field.mapValue.type,
+		// 					workflow: field.mapValue.workflow
+		// 			  })
+		// 			: ,
+		// 		tempMap
+		// 	),
+		// 	{}
+		// );
 	}
 
 	// {
