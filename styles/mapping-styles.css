@@ -1,6 +1,6 @@
 #ui-container {
 	background-color: #4e92e0;
-	height: 80vh;
+	height: 70vh;
 	overflow: auto;
 	padding: 1em 0 2em 0;
 }
@@ -16,7 +16,7 @@
 	background-color: white;
 	text-align: center; */
 	border: 1px solid rgba(49, 32, 74, 0.14);
-	margin: 1em 1em;
+	margin: 0.5em 2em 0.5em 0.5em;
 
 	cursor: move;
 }
@@ -36,7 +36,7 @@
 }
 
 .map-bag {
-	margin-top: 1em;
+	margin-top: 0.5em;
 	min-width: 40em;
 	background-color: #fdffff;
 	border: 1px solid #fafafa;
@@ -49,6 +49,7 @@
 	color: #337ab7;
 	padding: 1em;
 	width: 20em;
+	margin: auto 0;
 	font-weight: bold;
 }
 .map-bag header.required::after {

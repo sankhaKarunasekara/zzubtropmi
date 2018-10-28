@@ -1,3 +1,37 @@
+/* SCROLLBAR */
+/* Let's get this party started */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #ccc;
+	border: 4px solid transparent;
+	background-clip: content-box; /* THIS IS IMPORTANT */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #cccccc;
+	border: 1px solid rgb(122, 122, 122), 224);
+}
+
+#import-container .info-box {
+	font-size: 12px;
+	padding: 10px;
+	margin: 20px 10px 10px 10px;
+	line-height: 18px;
+	border: 1px solid #c4c4c4;
+	background: white;
+}
+
+#import-container .info-icon {
+	float: left;
+	fill: #479bff;
+	margin-right: 5px;
+}
+
 #import-step-container {
 	margin: 8px 0;
 }
@@ -9,7 +43,7 @@
 #import-navigation-container {
 	border-top: 1px solid #eee;
 	margin: 20px 0;
-	padding-top: 20px;
+	/* padding-top: 20px; */
 }
 
 h2 {

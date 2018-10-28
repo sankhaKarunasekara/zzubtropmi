@@ -6,7 +6,8 @@ angular
 		"ngMaterial",
 		"ngMessages",
 		"angular-loading-bar",
-		"buzzflow.import"
+		"buzzflow.import",
+		"mdDataTable"
 	])
 	.config(
 		[

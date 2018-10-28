@@ -1,35 +1,36 @@
 <md-content layout="row" layout-xs="column">
-	<div style="display:inline; padding:0 5%" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" flex>
-		<p class=" lead"><b>File upload</b></p>
+	<div style="display:inline; padding:2% 5%" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" flex>
 		<!-- Upload  -->
-		<form id="file-upload-form" class="uploader">
-			<input id="file-upload" file-on-change="startMapping" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-			 type="file" name="fileUpload" />
-			<label for="file-upload" id="file-drag">
+		<div layout-margin>
+			<form id="file-upload-form" class="uploader">
+				<input id="file-upload" file-on-change="startMapping" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+				 type="file" name="fileUpload" ng-disabled="workflowId==''" />
+				<label for="file-upload" id="file-drag">
 
-				<div id="start" ng-if="uploadState=='before'">
-					<md-icon class="material-icons">cloud_upload</md-icon>
-					<div>Select a file or drag here, xlsx csv file</div>
-					<div id="notimage" class="hidden">Please select a csv file or xlsx file</div>
-					<span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+					<div id="start" ng-if="uploadState=='before'">
+						<md-icon class="material-icons">cloud_upload</md-icon>
+						<div>Select a file or drag here, xlsx csv file</div>
+						<div id="notimage" class="hidden">Please select a csv file or xlsx file</div>
+						<span id="file-upload-btn" class="btn btn-primary">Select a file</span>
 
-					<!-- <md-button id="file-upload" id="file-upload-btn" class="md-button md-ink-ripple">
+						<!-- <md-button id="file-upload" id="file-upload-btn" class="md-button md-ink-ripple">
 						Select a File
 					</md-button> -->
-				</div>
-
-				<div ng-if="uploadState == 'processing'">
-					<p>Uploading..</p>
-					<md-progress-linear md-mode="indeterminate"></md-progress-linear>
-				</div>
-				<div id="response" ng-if="uploadState=='success'">
-					<md-icon class="material-icons">file</md-icon>
-					<div>
-						<p>{{fileName}}</p>
 					</div>
-				</div>
-			</label>
-		</form>
+
+					<div ng-if="uploadState == 'processing'">
+						<p>Uploading..</p>
+						<md-progress-linear md-mode="indeterminate"></md-progress-linear>
+					</div>
+					<div id="response" ng-if="uploadState=='success'">
+						<md-icon class="material-icons">file</md-icon>
+						<div>
+							<p>{{fileName}}</p>
+						</div>
+					</div>
+				</label>
+			</form>
+		</div>
 	</div>
 	<div flex>
 		<p class="lead"><b>Before uploading your file</b></p>

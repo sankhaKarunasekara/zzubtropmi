@@ -14,21 +14,29 @@ function importController($scope, importService, dragulaService) {
 
 	dragulaService.options($scope, "dragbag", {
 		revertOnSpill: true,
+		moves: function(el, source, handle, sibling) {
+			return true; // elements are always draggable by default
+		},
 		accepts: function(el, target, source, sibling) {
-			return true;
+			//TODO: source do not accept the element from the csv
+			return true; // elements can be dropped in any of the `containers` by default
+		},
+		invalid: function(el, handle) {
+			return false; // don't prevent any drags from initiating by default
 		}
 	});
 
 	$scope.searchText = {};
 	$scope.$on("drag-drop-mapping-update", function(eventName, args) {
 		$scope.$apply();
-
+		//TODO: implement what happends when remove,
+		//TODO: user was able to remove mapped field
 		var targetContainer = $(args.target);
 		targetContainer
 			.children()
 			.eq(1)
 			.remove();
-		console.table(targetContainer);
+		// console.table(targetContainer);
 	});
 
 	var vm = this;
@@ -56,8 +64,158 @@ function importController($scope, importService, dragulaService) {
 	//Functions
 	vm.gotoStep = function(newStep) {
 		vm.currentStep = newStep;
+		if (vm.currentStep == 3) step3();
 	};
 
+	function step3() {
+		$scope.sampleDataList = createSampleData(
+			$scope.csvHeaderList,
+			$scope.sampleData
+		);
+
+		if ($scope.sampleDataList["Deal"].length > 0) {
+			$scope.dealColumnKeys = Object.keys($scope.sampleDataList["Deal"][0]);
+		}
+		if ($scope.sampleDataList["People"].length > 0) {
+			$scope.peopleColumnKeys = Object.keys($scope.sampleDataList["People"][0]);
+		}
+		if ($scope.sampleDataList["Company"].length > 0) {
+			$scope.companyColumnKeys = Object.keys(
+				$scope.sampleDataList["Company"][0]
+			);
+		}
+		if ($scope.sampleDataList["Activity"].length > 0) {
+			$scope.activityColumnKeys = Object.keys(
+				$scope.sampleDataList["Activity"][0]
+			);
+		}
+
+		console.log("$scope.dealColumnKeys", $scope.sampleDealsList);
+		console.log("dealColumnKeys", $scope.dealColumnKeys);
+
+		// console.table($scope.sampleDataList["Deal"]);
+
+		$scope.nutritionList = [
+			{
+				id: 601,
+				name: "Frozen joghurt",
+				calories: 159,
+				fat: 6.0,
+				carbs: 24,
+				protein: 4.0,
+				sodium: 87,
+				calcium: "14%",
+				iron: "1%"
+			},
+			{
+				id: 602,
+				name: "Ice cream sandwitch",
+				calories: 237,
+				fat: 9.0,
+				carbs: 37,
+				protein: 4.3,
+				sodium: 129,
+				calcium: "84%",
+				iron: "1%"
+			},
+			{
+				id: 603,
+				name: "Eclair",
+				calories: 262,
+				fat: 16.0,
+				carbs: 24,
+				protein: 6.0,
+				sodium: 337,
+				calcium: "6%",
+				iron: "7%"
+			},
+			{
+				id: 604,
+				name: "Cupkake",
+				calories: 305,
+				fat: 3.7,
+				carbs: 67,
+				protein: 4.3,
+				sodium: 413,
+				calcium: "3%",
+				iron: "8%"
+			},
+			{
+				id: 605,
+				name: "Gingerbread",
+				calories: 356,
+				fat: 16.0,
+				carbs: 49,
+				protein: 2.9,
+				sodium: 327,
+				calcium: "7%",
+				iron: "16%"
+			},
+			{
+				id: 606,
+				name: "Jelly bean",
+				calories: 375,
+				fat: 0.0,
+				carbs: 94,
+				protein: 0.0,
+				sodium: 50,
+				calcium: "0%",
+				iron: "0%"
+			},
+			{
+				id: 607,
+				name: "Lollipop",
+				calories: 392,
+				fat: 0.2,
+				carbs: 98,
+				protein: 0,
+				sodium: 38,
+				calcium: "0%",
+				iron: "2%"
+			},
+			{
+				id: 608,
+				name: "Honeycomb",
+				calories: 408,
+				fat: 3.2,
+				carbs: 87,
+				protein: 6.5,
+				sodium: 562,
+				calcium: "0%",
+				iron: "45%"
+			},
+			{
+				id: 609,
+				name: "Donut",
+				calories: 452,
+				fat: 25.0,
+				carbs: 51,
+				protein: 4.9,
+				sodium: 326,
+				calcium: "2%",
+				iron: "22%"
+			},
+			{
+				id: 610,
+				name: "KitKat",
+				calories: 518,
+				fat: 26.0,
+				carbs: 65,
+				protein: 7,
+				sodium: 54,
+				calcium: "12%",
+				iron: "6%"
+			}
+		];
+		console.table($scope.nutritionList);
+		genearteRequest(
+			"malinator_2",
+			"myFile.csv",
+			"fileId1213",
+			$scope.workflowMapping,
+			$scope.csvHeaderList
+		);
+	}
 	vm.save = function() {
 		alert(
 			"Saving form... \n\n" +
@@ -146,6 +304,7 @@ function importController($scope, importService, dragulaService) {
 		Papa.parse(files[0], {
 			// worker: true,
 			// header: true,
+			preview: 10,
 			dynamicTyping: true,
 			// step: function(row) {
 			// 	console.log("Count: ", count, row.data);
@@ -153,11 +312,20 @@ function importController($scope, importService, dragulaService) {
 			// },
 			complete: function(results) {
 				$scope.$apply(function() {
+					console.log(results);
 					$scope.uploadState = "success";
 					$scope.csvHeaderFields = validateCSVData(results.data);
 
+					//shift remove the first row
+					let dataRows = results.data;
+					$scope.sampleData = dataRows.slice(1);
+
+					// $scope.sampleData = results.data;
+
 					if ($scope.csvHeaderFields.length == 0) {
 						//TODO: something wrong with file
+					} else if ($scope.workflowId == "") {
+						console.warn("please select a pipeline");
 					} else {
 						$scope.csvHeaderList = $scope.csvHeaderFields.map(
 							(item, index) => ({
@@ -244,9 +412,9 @@ function importController($scope, importService, dragulaService) {
 		var targetIndex = $target.attr("data-index");
 		var sourceIndex = $source.attr("data-index");
 
-		console.log("dropSourceIndex", dropSourceIndex);
-		console.log("targetIndex", targetIndex);
-		console.log("sourceIndex", sourceIndex);
+		// console.log("dropSourceIndex", dropSourceIndex);
+		// console.log("targetIndex", targetIndex);
+		// console.log("sourceIndex", sourceIndex);
 
 		// $scope.csvHeaderList[targetIndex].mapValue = $scope.dealFields.filter(
 		// 	item => item.id == sourceIndex
@@ -322,24 +490,7 @@ function importController($scope, importService, dragulaService) {
 				break;
 			default:
 		}
-		console.log($scope.csvHeaderList);
 
 		$scope.$emit("drag-drop-mapping-update", { target: target });
 	});
-
-	var mappedFields = $scope.csvHeaderList.reduce(function(
-		tempMap,
-		field,
-		index
-	) {
-		if (field.mapValue != null) {
-			tempMap[index] = {
-				fieldId: field.mapValue.id,
-				fieldType: field.mapValue.type,
-				workflow: field.mapValue.workflow
-			};
-		}
-		return tempMap;
-	},
-	{});
 }

@@ -1,1 +1,100 @@
-<h3>display sample mappings</h3>
+<div layout-margin>
+	<div layout="row" style="padding:8px" layout-align="center center">
+		<div flex="30" style="margin: auto 0">
+			<p>what to do with duplicate if found</p>
+		</div>
+		<div flex="30">
+			<md-input-container style="width:100% !important;">
+				<label for="importPipeline">Select Option</label>
+				<md-select ng-model="doMerge">
+					<md-option value="true">Merge</md-option>
+					<md-option value="false">Duplicate</md-option>
+				</md-select>
+			</md-input-container>
+		</div>
+	</div>
+
+	<md-tabs md-dynamic-height md-border-bottom>
+		<md-tab>
+			<md-tab-label>
+				<md-tooltip>sample of deals about to import</md-tooltip>
+				<!-- <i class="material-icons">attach_money</i> -->
+				<p>Deals</p>
+			</md-tab-label>
+			<md-tab-body style="padding-top:0px">
+				<mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}" mdt-row="{
+						data: sampleDataList['Deal'],
+						'table-row-id-key': 'rowNumber',
+						'column-keys': dealColumnKeys
+						}">
+					<mdt-header-row>
+						<mdt-column align-rule="left" ng-repeat="columnName in dealColumnKeys">{{columnName}}</mdt-column>
+					</mdt-header-row>
+				</mdt-table>
+			</md-tab-body>
+		</md-tab>
+
+		<md-tab>
+			<md-tab-label>
+				<md-tooltip>sample of people about to import</md-tooltip>
+				<!-- <i class="material-icons">people</i> -->
+				<p>People</p>
+			</md-tab-label>
+			<md-tab-body>
+				<mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}" mdt-row="{
+					data: sampleDataList['People'],
+					'table-row-id-key': 'rowNumber',
+					'column-keys': peopleColumnKeys
+					}">
+					<mdt-header-row>
+						<mdt-column align-rule="left" ng-repeat="columnName in peopleColumnKeys">{{columnName}}</mdt-column>
+					</mdt-header-row>
+				</mdt-table>
+			</md-tab-body>
+		</md-tab>
+
+		<md-tab>
+			<md-tab-label>
+				<md-tooltip>sample of companies about to import</md-tooltip>
+				<!-- <i class="material-icons">business</i> -->
+				<p>Companies</p>
+			</md-tab-label>
+			<md-tab-body>
+
+				<mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}" mdt-row="{
+							data: sampleDataList['Company'],
+							'table-row-id-key': 'rowNumber',
+							'column-keys': companyColumnKeys
+							}">
+					<mdt-header-row>
+						<mdt-column align-rule="left" ng-repeat="columnName in companyColumnKeys">{{columnName}}</mdt-column>
+					</mdt-header-row>
+				</mdt-table>
+			</md-tab-body>
+		</md-tab>
+		<md-tab>
+			<md-tab-label>
+				<md-tooltip>sample of companies about to import</md-tooltip>
+				<p>Activites</p>
+				<!-- <i class="material-icons">event</i> -->
+			</md-tab-label>
+			<md-tab-body>
+				<mdt-table paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}" mdt-row="{
+				    data: sampleDataList['Activity'],
+				    'table-row-id-key': 'rowNumber',
+				    'column-keys': activityColumnKeys
+				    }">
+					<mdt-header-row>
+						<mdt-column align-rule="left" ng-repeat="columnName in activityColumnKeys">{{columnName}}</mdt-column>
+					</mdt-header-row>
+				</mdt-table>
+			</md-tab-body>
+		</md-tab>
+	</md-tabs>
+
+	<!-- <div style="font-size: 12px;padding:5px;margin:0; line-height:18px; border: 1px solid #c4c4c4;background: white;">
+		<ng-md-icon icon="info" size="16" style="float:left;fill:#479BFF;margin-right: 5px;"></ng-md-icon>
+		<span><i>Table card</i> feature adds a label on the top of the table.</span>
+	</div> -->
+
+</div>

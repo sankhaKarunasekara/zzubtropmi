@@ -29,7 +29,6 @@
   <script type="text/javascript" src="/node_modules/angular-route/angular-route.js"></script>
   <script type="text/javascript" src="/node_modules/angular-animate/angular-animate.js"></script>
 
-  <script src="/node_modules/angular-material-data-table/dist/md-data-table.js"></script>
   <script type="text/javascript" src="/node_modules/angular-material-icons/angular-material-icons.js"></script>
   <link rel='stylesheet' href='/node_modules/angular-loading-bar/build/loading-bar.min.css' type='text/css' media='all' />
   <script type='text/javascript' src='/node_modules/angular-loading-bar/build/loading-bar.min.js'></script>
@@ -37,6 +36,12 @@
   <script type='text/javascript' src='/node_modules/angularjs-dragula/dist/angularjs-dragula.js'></script>
   <link rel='stylesheet' href='/node_modules/angularjs-dragula/dist/dragula.min.css'>
 
+  <!--mdt tables-->
+  <script type="text/javascript" src="/node_modules/md-data-table/dist/md-data-table-templates.js"></script>
+  <script type="text/javascript" src="/node_modules/md-data-table/dist/md-data-table.js"></script>
+  <link rel='stylesheet' href='/node_modules/md-data-table/dist/md-data-table-style.css'>
+
+  <script type="text/javascript" src="/node_modules/lodash/lodash.min.js"></script>
   <script type='text/javascript' src='/app.constant.js'></script>
 
 
@@ -48,11 +53,11 @@
 <!-- https://codepen.io/mattsince87/pen/yadZXv -->
 
 <body>
-  <md-toolbar class="md-whiteframe-1dp">
+  <!-- <md-toolbar class="md-whiteframe-1dp">
     <div class="md-toolbar-tools">
       <div class="md-title">Buzzflow Import</div>
     </div>
-  </md-toolbar>
+  </md-toolbar> -->
 
   <div class="container">
     <div class="row">
@@ -66,9 +71,31 @@
               </li>
             </ul>
           </div>
+          <div ng-if="vm.currentStep=='1'" class="info-box">
+            <ng-md-icon icon="info" size="16" class="info-icon"></ng-md-icon>
+            <span><i>Import </i>you can import deals,contact,companies and activities to Buzzflow from a single CSV
+              file. first select a pipeline,
+              and upload your CSV file.
+            </span>
+          </div>
+
+          <div ng-if="vm.currentStep=='2'" class="info-box">
+            <ng-md-icon icon="info" size="16" class="info-icon"></ng-md-icon>
+            <span><i>Import Mapping</i> drag fields from right side picker to left side boxes mathing your data,
+              Unmaped fields will not be Imported.
+            </span>
+          </div>
+
+          <div ng-if="vm.currentStep=='3'" class="info-box">
+            <ng-md-icon icon="info" size="16" class="info-icon"></ng-md-icon>
+            <span><i>Samples </i>this window will show you, brief sample of data about to import, please make sure
+              everthing is
+              right, you can go back and forth with the mapping window and finalized the mappings.</span>
+          </div>
+
 
           <div layout="row" style="margin-top:24px; padding-bottom:8px;">
-            <div flex="40">
+            <div flex="40" ng-hide="(vm.currentStep=='3')||(vm.currentStep=='4')">
               <md-input-container style="width:100% !important; margin-top: 8px;">
                 <label for="importPipeline">Select Pipeline</label>
                 <md-select ng-disabled="vm.currentStep!='1'" ng-change="loadWorkflowFieldItems();" id="importPipeline"
@@ -109,13 +136,13 @@
 
               <div class="pull-right">
 
-                <md-button ng-disabled="vm.currentStep >= vm.steps.length" ng-click="vm.gotoStep(vm.currentStep + 1)"
+                <md-button ng-disabled="vm.currentStep >= vm.steps.length-1" ng-click="vm.gotoStep(vm.currentStep + 1)"
                   class="md-button md-ink-ripple">
                   Next step
                 </md-button>
 
                 </span>
-                <md-button ng-disabled="vm.currentStep != vm.steps.length" ng-click="vm.save()" class="
+                <md-button ng-disabled="vm.currentStep != vm.steps.length-1" ng-click="vm.save()" class="
                           md-primary md-ink-ripple">
                   Start Import
                 </md-button>

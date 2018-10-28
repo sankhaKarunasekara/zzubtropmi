@@ -3,7 +3,7 @@
 		<md-tabs md-dynamic-height md-border-bottom>
 			<md-tab>
 				<md-tab-label>
-					<md-tooltip>People</md-tooltip>
+					<md-tooltip>csv fields</md-tooltip>
 					<!-- <i class="material-icons">file</i> -->
 					<p>csv Fields</p>
 					<!-- <span class="badge badge-pill">{{csvHeaderList.length}}</span> -->
@@ -17,9 +17,10 @@
 								<!-- <p style="margin:1em"><i>Drag and drop a filed here</i></p> -->
 								<md-list-item ng-if="item.mapValue!=null" class="source-item" data-index="{{item.id}}">
 									<p>{{item.mapValue.name}}</p>
+									<!-- <ng-md-icon ng-if="item.mapValue.module=='Deal'" class="md-secondary" icon="info" size="16" style="float:left;fill:#479BFF;margin-right: 5px;"></ng-md-icon> -->
 									<md-icon ng-if="item.mapValue.module=='Deal'" class="md-secondary">attach_money
 									</md-icon>
-									<md-icon ng-if="item.mapValue.module=='People'" class=" md-secondary">perm_identity
+									<md-icon ng-if="item.mapValue.module=='People'" class="md-secondary">perm_identity
 									</md-icon>
 									<md-icon ng-if="item.mapValue.module=='Company'" class="md-secondary">business
 									</md-icon>
@@ -34,8 +35,8 @@
 		</md-tabs>
 	</div>
 
-	<div flex="40" flex-offset="5">
-		<md-tabs md-dynamic-height md-border-bottom>
+	<div flex="45" flex-offset="5" style="padding-left:5%; border-left:2px solid #cccccc;">
+		<md-tabs style="position:sticky" md-dynamic-height md-border-bottom>
 			<md-tab>
 				<md-tab-label>
 					<md-tooltip>People</md-tooltip>
