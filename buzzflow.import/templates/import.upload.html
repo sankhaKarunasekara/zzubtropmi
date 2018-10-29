@@ -1,18 +1,18 @@
-<md-content layout="row" layout-xs="column">
+<div layout="row" layout-xs="column">
 	<div style="display:inline; padding:2% 5%" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" flex>
 		<!-- Upload  -->
 		<div layout-margin>
-			<form id="file-upload-form" class="uploader">
+			<form class="uploader">
 				<input id="file-upload" file-on-change="startMapping" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-				 type="file" name="fileUpload" ng-disabled="workflowId==''" />
+				 type="file" name="fileUpload" />
 				<label for="file-upload" id="file-drag">
 
 					<div id="start" ng-if="uploadState=='before'">
-						<md-icon class="material-icons">cloud_upload</md-icon>
-						<div>Select a file or drag here, xlsx csv file</div>
-						<div id="notimage" class="hidden">Please select a csv file or xlsx file</div>
-						<span id="file-upload-btn" class="btn btn-primary">Select a file</span>
-
+						<div style="padding-bottom: 10px;">
+							<span id="file-upload-btn" class="md-primary md-button md-raised">Select a file</span>
+							<span>- or drag a file here.</span>
+						</div>
+						<h5>only excel(.xls, .xlxs) and .csv file types are supported.</h5>
 						<!-- <md-button id="file-upload" id="file-upload-btn" class="md-button md-ink-ripple">
 						Select a File
 					</md-button> -->
@@ -22,8 +22,10 @@
 						<p>Uploading..</p>
 						<md-progress-linear md-mode="indeterminate"></md-progress-linear>
 					</div>
-					<div id="response" ng-if="uploadState=='success'">
-						<md-icon class="material-icons">file</md-icon>
+					<div layout="column" layout-align="start center" id="response" ng-if="uploadState=='success'">
+						<div>
+							<ng-md-icon icon="insert_drive_file" size="50" class="success-icon"></ng-md-icon>
+						</div>
 						<div>
 							<p>{{fileName}}</p>
 						</div>
@@ -32,19 +34,18 @@
 			</form>
 		</div>
 	</div>
-	<div flex>
-		<p class="lead"><b>Before uploading your file</b></p>
-		<h4>Learn Buzzflow's data structure</h4>
+	<div style="display:inline; padding:3% 0; backgound:blue" flex>
+		<p><b>Before uploading your file</b></p>
 		<p>Download and use our sample file to see exactly how we organize data in Buzzflow.</p>
 		<ul>
-			<li><a>Download .xlsx sample file</a></li>
-			<li><a>Download .csv sample file</a></li>
+			<li><a style="font-size:14px;">Download .xlsx sample file</a></li>
+			<li><a style="font-size:14px;">Download .csv sample file</a></li>
 		</ul>
-		<h4>Fill in mandatory fields</h4>
+		<!-- <h4>Fill in mandatory fields</h4>
 		<p>Certain fields need to be entered in order for your import to be successful. Make sure they are complete before
 			you start importing.<p>
 				<h4>Create custom fields</h4>
 				<p>Some data fields may not be present by default. Make sure you create these custom fields before importing your
-					data.<p>
+					data.<p> -->
 	</div>
-</md-content>
+</div>

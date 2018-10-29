@@ -137,13 +137,13 @@
               <div class="pull-right">
 
                 <md-button ng-disabled="vm.currentStep >= vm.steps.length-1" ng-click="vm.gotoStep(vm.currentStep + 1)"
-                  class="md-button md-ink-ripple">
+                  class="md-raised md-primary md-ink-ripple">
                   Next step
                 </md-button>
 
                 </span>
                 <md-button ng-disabled="vm.currentStep != vm.steps.length-1" ng-click="vm.save()" class="
-                          md-primary md-ink-ripple">
+                  md-raised md-primary md-ink-ripple">
                   Start Import
                 </md-button>
               </div>

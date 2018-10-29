@@ -18,8 +18,12 @@
 		"wrap-iife": ["error", "inside"]
 	},
 	"parserOptions": {
-		"ecmaVersion": 2017
+		"ecmaVersion": 2017,
+		"ecmaFeatures": {
+			"experimentalObjectRestSpread": true
+		}
 	},
+
 	"extends": ["prettier"],
 	"plugins": ["prettier"]
 }
